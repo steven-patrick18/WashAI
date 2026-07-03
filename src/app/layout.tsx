@@ -33,6 +33,7 @@ export default async function RootLayout({
                   <a href="/recipes">Recipe History</a>
                   <a href="/shades">Shade Chart</a>
                   <a href="/masters">Fabrics &amp; Machines</a>
+                  <a href="/chemicals">Chemicals</a>
                   <a href="/knowledge">Knowledge Base</a>
                   {session.role === "OWNER" && <a href="/users">Users</a>}
                 </nav>
