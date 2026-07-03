@@ -49,7 +49,10 @@ export async function createSessionCookie(session: Session): Promise<void> {
   store.set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    // Secure cookies only work over HTTPS — browsers silently drop them on
+    // plain http (e.g. bare-IP deployments). Turn on via COOKIE_SECURE=true
+    // once the site is behind TLS (Caddy + domain).
+    secure: process.env.COOKIE_SECURE === "true",
     path: "/",
     maxAge: SESSION_DAYS * 24 * 60 * 60,
   });
