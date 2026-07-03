@@ -43,13 +43,18 @@ git clone https://github.com/steven-patrick18/WashAI.git
 cd WashAI
 
 # Secrets — NEVER commit this file
-cat > .env <<'EOF'
+cat > .env <<EOF
 ANTHROPIC_API_KEY=sk-ant-...
+AUTH_SECRET=$(head -c32 /dev/urandom | xxd -p -c64)
 EOF
 
 docker compose -f docker-compose.prod.yml up -d --build
 # App is now on http://SERVER_IP:3000
 ```
+
+**First visit** redirects to `/setup` — create the OWNER account immediately
+(whoever gets there first owns the instance). The owner then adds
+manager/operator accounts at `/users`.
 
 ## HTTPS + domain (recommended)
 
@@ -90,10 +95,10 @@ Schema changes apply automatically on boot (`prisma db push` in the container CM
 
 - [ ] `ufw allow 22,80,443/tcp && ufw enable` (close port 3000 externally once Caddy fronts it)
 - [ ] SSH key-only login, disable password auth
-- [ ] `.env` file permissions `600`; API key never committed
-- [ ] The app has **no authentication yet** — until a login is added, keep it
-      behind the firewall/VPN or add Caddy basic-auth:
-      `caddy reverse-proxy --from ... --to ...` with a `basicauth` Caddyfile block
+- [ ] `.env` file permissions `600`; secrets never committed
+- [ ] ✅ Authentication is built in (email + password, OWNER/MANAGER/OPERATOR
+      roles, all pages and APIs protected by middleware). Complete `/setup`
+      immediately after first deploy. Rotating `AUTH_SECRET` signs everyone out.
 
 ## What's deliberately NOT here yet
 

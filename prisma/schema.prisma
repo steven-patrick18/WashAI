@@ -15,6 +15,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// --- Auth (Module 19 groundwork: owner / manager / operator roles) ----------
+// role: OWNER | MANAGER | OPERATOR (string — SQLite has no enums)
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         String   @default("OPERATOR")
+  createdAt    DateTime @default(now())
+}
+
 // --- Module 2: Fabric Intelligence -----------------------------------------
 model Fabric {
   id            String   @id @default(cuid())
