@@ -3,6 +3,10 @@
 #   2. docker compose -f docker-compose.prod.yml up -d --build
 # Data (SQLite db) and uploaded knowledge-base PDFs live on named volumes —
 # they survive rebuilds and redeploys. Back both volumes up (see docs/deployment.md).
+# Pin the compose project name so the updater sidecar (whose cwd is /repo)
+# operates on the SAME containers/volumes as a manual deploy from ~/WashAI.
+name: washai
+
 services:
   washai:
     build: .
@@ -16,10 +20,24 @@ services:
       AUTH_SECRET: "${AUTH_SECRET}"
       # Set to "true" once the site is served over HTTPS (Caddy + domain):
       COOKIE_SECURE: "${COOKIE_SECURE:-false}"
+      # Self-update via the /system page:
+      UPDATER_URL: "http://updater:9000"
+      UPDATER_TOKEN: "${UPDATER_TOKEN:-}"
       # ANTHROPIC_MODEL: "claude-opus-4-8"   # optional override
     volumes:
       - washai-data:/data
       - washai-uploads:/app/uploads
+
+  updater:
+    build: ./updater
+    container_name: washai-updater
+    restart: unless-stopped
+    # No ports — reachable only from the washai container on the Docker network.
+    environment:
+      UPDATER_TOKEN: "${UPDATER_TOKEN:-}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /root/WashAI:/repo
 
 volumes:
   washai-data:

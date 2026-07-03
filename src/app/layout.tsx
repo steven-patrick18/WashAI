@@ -36,6 +36,7 @@ export default async function RootLayout({
                   <a href="/chemicals">Chemicals</a>
                   <a href="/knowledge">Knowledge Base</a>
                   {session.role === "OWNER" && <a href="/users">Users</a>}
+                  {session.role === "OWNER" && <a href="/system">System</a>}
                 </nav>
                 <div className="userbar">
                   <span className="user-chip">
