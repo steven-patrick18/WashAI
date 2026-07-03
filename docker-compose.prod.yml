@@ -1,0 +1,23 @@
+# Production stack for WashAI on a single VPS.
+#   1. Put ANTHROPIC_API_KEY in a .env file next to this compose file
+#   2. docker compose -f docker-compose.prod.yml up -d --build
+# Data (SQLite db) and uploaded knowledge-base PDFs live on named volumes —
+# they survive rebuilds and redeploys. Back both volumes up (see docs/deployment.md).
+services:
+  washai:
+    build: .
+    container_name: washai
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "file:/data/washai.db"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
+      # ANTHROPIC_MODEL: "claude-opus-4-8"   # optional override
+    volumes:
+      - washai-data:/data
+      - washai-uploads:/app/uploads
+
+volumes:
+  washai-data:
+  washai-uploads:

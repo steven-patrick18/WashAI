@@ -1,0 +1,112 @@
+// WashAI data model — the intelligent core.
+// Fabric + Machine master data feed the Recipe AI Generator; ProductionResult
+// captures batch outcomes so the Recipe Learning Engine (Module 4) can plug in
+// without a schema rewrite.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// SQLite for zero-dependency local dev. For production, switch provider to
+// "postgresql" and point DATABASE_URL at your Postgres (docker-compose.yml
+// provides one) — the model works on both.
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// --- Module 2: Fabric Intelligence -----------------------------------------
+model Fabric {
+  id            String   @id @default(cuid())
+  name          String // human label, e.g. "12oz Rigid Selvedge Indigo"
+  supplier      String?
+  construction  String? // e.g. "3/1 RHT twill"
+  warpCount     String? // e.g. "10s"
+  weftCount     String? // e.g. "10s"
+  gsm           Int?
+  ounce         Float? // oz/yd²
+  composition   String? // e.g. "98% Cotton 2% Elastane"
+  stretchPct    Float?
+  lycraPct      Float?
+  indigoDepth   String? // "deep" | "medium" | "light"
+  sulfurDyePct  Float?
+  yarnType      String? // "ring" | "open-end" | "slub"
+  finish        String?
+  shrinkagePct  Float?
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  recipes Recipe[]
+}
+
+// --- Module 1: Machine Master ----------------------------------------------
+// type: WASHER_EXTRACTOR | STONE_WASH | OZONE | LASER | HYDRO_EXTRACTOR |
+//       DRYER | PP_SPRAY_BOOTH   (string — SQLite has no enums)
+model Machine {
+  id             String      @id @default(cuid())
+  name           String
+  type           String
+  capacityKg     Float?
+  rpm            Int?
+  waterPerCycleL Float?
+  maxTempC       Float?
+  steamKgPerHr   Float?
+  notes          String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  recipes Recipe[]
+}
+
+// --- Module 3: Recipe AI Generator -----------------------------------------
+// status: GENERATED | APPROVED | REJECTED (string — SQLite has no enums)
+model Recipe {
+  id           String  @id @default(cuid())
+  styleNumber  String?
+  buyer        String?
+  quantityPcs  Int?
+  shadeTarget  String? // e.g. "mid blue vintage"
+  vintageLevel String? // "light" | "medium" | "heavy"
+  handFeel     String? // "soft" | "medium" | "firm"
+  status       String  @default("GENERATED")
+
+  // The AI-generated recipe, stored verbatim so the UI and the learning
+  // engine can both read structured stages, chemicals, predictions, and risks.
+  generated Json
+
+  model     String? // which Claude model produced it (provenance for learning)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  fabric    Fabric?  @relation(fields: [fabricId], references: [id])
+  fabricId  String?
+  machine   Machine? @relation(fields: [machineId], references: [id])
+  machineId String?
+
+  results ProductionResult[]
+}
+
+// --- Module 13: Knowledge Base ----------------------------------------------
+// Uploaded reference documents (books, TDS sheets, papers). Files live on disk
+// under uploads/; this table holds metadata. Q&A sends selected PDFs to Claude.
+model Document {
+  id        String   @id @default(cuid())
+  title     String
+  filename  String // stored name under uploads/
+  mimeType  String
+  sizeBytes Int
+  createdAt DateTime @default(now())
+}
+
+// --- Module 4: Recipe Learning Engine (feedback capture) -------------------
+// outcome: PERFECT | TOO_DARK | TOO_LIGHT | EXCESS_DAMAGE | HIGH_SHRINKAGE |
+//          UNEVEN_SHADE | CUSTOMER_REJECTION (string — SQLite has no enums)
+model ProductionResult {
+  id           String   @id @default(cuid())
+  recipe       Recipe   @relation(fields: [recipeId], references: [id])
+  recipeId     String
+  outcome      String
+  operatorNote String?
+  createdAt    DateTime @default(now())
+}

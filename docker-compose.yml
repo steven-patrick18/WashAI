@@ -1,0 +1,19 @@
+# One-command local Postgres for WashAI.
+#   docker compose up -d
+# Then: npm run db:push && npm run db:seed
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: washai-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: washai
+      POSTGRES_PASSWORD: washai
+      POSTGRES_DB: washai
+    ports:
+      - "5432:5432"
+    volumes:
+      - washai-pgdata:/var/lib/postgresql/data
+
+volumes:
+  washai-pgdata:
