@@ -52,6 +52,16 @@ export default function RecipeView({ recipe }: { recipe: GeneratedRecipe }) {
               </tbody>
             </table>
           )}
+          {s.safety?.length > 0 && (
+            <div className="stage-safety">
+              {s.safety.map((w, j) => (
+                <div key={j}>⚠️ {w}</div>
+              ))}
+            </div>
+          )}
+          {s.checkpoint && (
+            <div className="stage-checkpoint">✅ Checkpoint: {s.checkpoint}</div>
+          )}
         </div>
       ))}
 
@@ -67,6 +77,17 @@ export default function RecipeView({ recipe }: { recipe: GeneratedRecipe }) {
             <li key={i}>{r}</li>
           ))}
         </ul>
+      )}
+
+      {recipe.commonMistakes?.length > 0 && (
+        <div className="mistakes">
+          <b>First-timer mistakes to avoid</b>
+          <ul>
+            {recipe.commonMistakes.map((m, i) => (
+              <li key={i}>{m}</li>
+            ))}
+          </ul>
+        </div>
       )}
 
       {recipe.notes && <p className="notes">{recipe.notes}</p>}

@@ -316,6 +316,246 @@ button.logout:hover {
   color: var(--muted);
 }
 
+/* --- Teaching fields on recipes ----------------------------------------------- */
+.stage-safety {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #fdf6ec;
+  border: 1px solid #f0dfc0;
+  border-radius: 8px;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.stage-checkpoint {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #ecf6f0;
+  border: 1px solid #cfe7d9;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ok);
+}
+.mistakes {
+  margin: 16px 0;
+  padding: 14px 16px;
+  background: #fbf3f2;
+  border: 1px solid #ecd2ce;
+  border-radius: 12px;
+  font-size: 13px;
+}
+.mistakes ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+.mistakes li {
+  margin: 4px 0;
+}
+
+/* --- Guided Run Mode ----------------------------------------------------------- */
+.btn-primary {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 12px 20px;
+  background: var(--indigo-600);
+  color: #fff !important;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  background: var(--indigo-800);
+}
+.btn-ghost {
+  display: inline-block;
+  padding: 9px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink) !important;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  margin: 0;
+  width: auto;
+}
+.run-cta {
+  width: 100%;
+  text-align: center;
+}
+
+.run {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.run-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.run-label {
+  font-weight: 700;
+  font-size: 15px;
+}
+.run-progress {
+  color: var(--muted);
+  font-size: 13px;
+}
+.run-track {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.run-dot {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--line);
+}
+.run-dot.done {
+  background: var(--ok);
+}
+.run-dot.now {
+  background: var(--indigo-600);
+}
+
+.run-stage h2 {
+  font-size: 22px;
+  margin: 0 0 4px;
+}
+.run-purpose {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0 0 16px;
+}
+.run-params {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.run-params div {
+  background: #f4f6fb;
+  border: 1px solid #e2e7f3;
+  border-radius: 10px;
+  padding: 12px 8px;
+  text-align: center;
+}
+.run-params b {
+  display: block;
+  font-size: 19px;
+  color: var(--indigo-800);
+}
+.run-params span {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.run-water {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.run-chem {
+  margin-top: 12px;
+  font-size: 15px;
+}
+.run-safety {
+  font-size: 13.5px;
+  margin-top: 14px;
+}
+.run-timer {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--indigo-950);
+  border-radius: 12px;
+}
+.run-clock {
+  font-size: 34px;
+  font-weight: 800;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.run-timer.up {
+  background: var(--ok);
+}
+.run-timeup {
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+}
+.btn-timer {
+  margin: 0;
+  width: auto;
+  padding: 8px 18px;
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.run-checkpoint {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 16px;
+  padding: 14px;
+  background: #ecf6f0;
+  border: 2px solid var(--ok);
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 400;
+}
+.run-checkpoint input {
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  flex: none;
+}
+.run-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+}
+.run-actions button:last-child {
+  flex: 1;
+  margin-top: 0;
+  font-size: 16px;
+  padding: 14px;
+}
+.run-actions .btn-ghost {
+  margin-top: 0;
+}
+.run-hint {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12.5px;
+  margin: 10px 0 0;
+}
+
+.run-done {
+  max-width: 480px;
+  margin: 40px auto;
+  text-align: center;
+}
+.run-done-icon {
+  font-size: 44px;
+}
+.run-done-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
 .grid {
   display: grid;
   grid-template-columns: 380px 1fr;

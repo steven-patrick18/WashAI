@@ -47,6 +47,9 @@ export default async function RecipeDetailPage({
               <span><b>Qty</b>{recipe.quantityPcs ?? "—"}</span>
               <span><b>Shade</b>{recipe.shadeTarget ?? "—"}</span>
             </div>
+            <Link href={`/recipes/${recipe.id}/run`} className="btn-primary run-cta">
+              ▶ Run this wash (guided, stage by stage)
+            </Link>
           </div>
 
           <OutcomePanel recipeId={recipe.id} />
